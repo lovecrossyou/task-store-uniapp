@@ -22,6 +22,9 @@ const store = new Vuex.Store({
 		logout(state) {
 			state.userName = "";
 			state.hasLogin = false;
+		},
+		updateLoginState(state,hasLogin){
+			state.hasLogin = hasLogin;
 		}
 	},
 	actions: {
@@ -31,6 +34,14 @@ const store = new Vuex.Store({
 		},data) {
 			console.log('loigin data ',data);
 			const res = await api.login(data);
+			commit('updateLoginState',true);
+		},
+		async tryLogin({
+			commit,
+			state
+		},data){
+			const cookie = uni.getStorageSync('cookieKey');
+			commit('updateLoginState',cookie.length!=0);
 		}
 	}
 })

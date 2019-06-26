@@ -8,7 +8,6 @@ export const baseURL = 'http://192.168.1.246:7001' //公司
 request.config.baseURL = baseURL
 
 const errorPrompt = (err) => {
-	console.log('errorPrompt ',JSON.stringify(err));
 	uni.showToast({
 		title: err.message || 'fetch data error.',
 		icon: 'none'
@@ -28,8 +27,8 @@ request.interceptors.response.use((response, promise) => {
 	if (response && response.headers && response.headers['set-cookie']) {
 		uni.setStorageSync('cookieKey', response.headers['set-cookie'][0]); //保存Cookie到Storage
 	}
-	console.log('response.data ',response.headers['set-cookie'])
-	if(response.data.message){
+	console.log('response.data ',response.data);
+	if(response.data.status !== 1){
 		errorPrompt(response.data);
 		return Promise.resolve(null);
 	}
